@@ -227,7 +227,11 @@ class Experimenter(threading.Thread):
                     self.idlepos = 0
 
                 while time.time() < nextloop and not self.stop_experiment:
-                    time.sleep(1)
+                    # keep rotating while waiting, similar light conditions for each plate
+                    self.hw.motorOn(True)
+                    self.hw.halfStep(21, 0.03)
+                    self.hw.motorOn(False)
+                    time.sleep(60)
 
         finally:
             log("Experiment stopped.")
